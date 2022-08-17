@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyFonts</string>
+    <string name="label_app">My Fonts</string>
+    <string name="loading">Loading...</string>
+</resources>

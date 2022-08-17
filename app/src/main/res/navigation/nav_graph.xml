@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.changefontssize.bigfont.view.fragment.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_customizeFragment"
+            app:destination="@id/customizeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.changefontssize.bigfont.view.fragment.DetailFragment"
+        android:label="DetailFragment" />
+    <fragment
+        android:id="@+id/customizeFragment"
+        android:name="com.changefontssize.bigfont.view.fragment.CustomizeFragment"
+        android:label="CustomizeFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.changefontssize.bigfont.view.fragment.SettingFragment"
+        android:label="SettingFragment" />
+</navigation>
