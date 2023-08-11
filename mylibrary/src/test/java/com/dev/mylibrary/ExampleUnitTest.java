@@ -1,4 +1,4 @@
-package com.example.myfonts;
+package com.dev.mylibrary;
 
 import org.junit.Test;
 
