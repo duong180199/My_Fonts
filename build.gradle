@@ -1,14 +1,70 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext {
+        sdkVersionCode = 1
+        sdkVersionName = '2.1.2-dev10'
+    }
+
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
+    }
+}
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+allprojects {
+    apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'maven-publish'
+}
+
+def libraryGroupId = 'vcc.viv.ads'
+def libraryArtifactId = 'vcc-sdk-ads'
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"
+    publish {
+        repository {
+            repoKey = 'gradle-dev-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+//            maven = true
+        }
+    }
+}
+
+project('mylibrary') {
+    artifactoryPublish.dependsOn('build')
+
+    publishing {
+        publications {
+            aar(MavenPublication) {
+                groupId = libraryGroupId
+                artifactId = libraryArtifactId
+                version = sdkVersionName
+                // Tell maven to prepare the generated "*.aar" file for publishing
+                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each { dependency ->
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dependency.group)
+                        dependencyNode.appendNode('artifactId', dependency.name)
+                        dependencyNode.appendNode('version', dependency.version)
+                    }
+                }
+            }
+        }
+    }
+
+    artifactoryPublish {
+        publications(publishing.publications.aar)
     }
 }
 
